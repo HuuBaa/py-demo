@@ -1,5 +1,5 @@
 import argparse
-parser=argparse.ArgumentParser()
+parser=argparse.ArgumentParser(description="calcute X to the power of Y")
 group=parser.add_mutually_exclusive_group()
 group.add_argument('-v','--verbose',action='store_true')
 group.add_argument('-q','--quiet',action='store_true')
@@ -14,4 +14,5 @@ elif args.verbose:
 	print("{}^{}={}".format(args.x,args.y,answer))
 else:
 	print("{} to the power {} equals {}".format(args.x,args.y,answer))
+
 
