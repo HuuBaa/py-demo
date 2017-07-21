@@ -1,7 +1,7 @@
 #-*- coding:utf-8 -*-
 from collections import defaultdict
 import curses
-from random import randrange,chioce
+from random import randrange, choice
 
 actions=['Up','Left','Down','Right','Restart','Exit']
 letter_codes=[ord(ch) for ch in 'WASDRQwasdrq']
@@ -42,7 +42,7 @@ class GameField(object):
     def spawn(self):
         new_element=4 if randrange(100) > 89 else 2
         #随机生成位置
-        (i,j)=chioce([(i,j) for i in range(self.width) for j in range(self.height) if self.field[i][j] == 0])
+        (i,j)=choice([(i,j) for i in range(self.width) for j in range(self.height) if self.field[i][j] == 0])
         self.field[i][j]=new_element
 
     def move(self,direction):
@@ -57,7 +57,7 @@ class GameField(object):
                 new_row=[]
                 for i in range(len(row)): 
                     if pair:
-                        new_row[i].append(row[i]*2)
+                        new_row.append(row[i]*2)
                         self.score += 2*row[i]
                         pair=False
                     else:
@@ -109,7 +109,7 @@ class GameField(object):
         return  any(any(i >= self.win_value for i in row) for row in self.field)
 
     def is_gameover(self):
-        return  any(self.move_is_possible(move) for move in actions)
+        return  not any(self.move_is_possible(move) for move in actions)
 
     def draw(self,screen):
         help_string1='(W) Up  (A)Left  (S)Down  (D)Right'
@@ -128,7 +128,7 @@ class GameField(object):
             draw_hor_separator.counter+=1
 
         def draw_row(row):
-            cast(''.join('|{: ^5}'.format(num) if num>0 else '|     ') for num in row)
+            cast(''.join('|{: ^6}'.format(num) if num>0 else '|      ' for num in row) +'|')
 
         screen.clear()
         cast('SCORE:'+str(self.score))
@@ -159,6 +159,7 @@ def main(stdsrc):
     def game():
         game_field.draw(stdsrc)
         action=get_user_action(stdsrc)
+
         if action=='Restart':
             return 'Init'
         if action=='Exit':
@@ -175,7 +176,7 @@ def main(stdsrc):
         game_field.draw(stdsrc)
         action=get_user_action(stdsrc)
 
-        responses=defaultdic(lambda:state)
+        responses=defaultdict(lambda:state)
         responses['Restart'],responses['Exit']='Init','Exit'
         return responses[action]
 
@@ -190,7 +191,7 @@ def main(stdsrc):
 
 
     curses.use_default_colors()
-    game_field=GameField(win=32)
+    game_field=GameField(win=2048)
     state='Init'
 
 
