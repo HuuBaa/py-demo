@@ -1,37 +1,7 @@
-# def main(stdsrc):
-#     def init():
-#         #游戏初始化
-#         return 'Game'
-#     def game():
-#         if action=='Restart':
-#             return 'Init'
-#         if action=='Exit':
-#             return 'Exit'
-#         if 成功移动了一步:
-#             if 游戏胜利:
-#                 return 'Win'
-#             if 游戏失败:
-#                 return 'Gameover'
-#         return 'Game'
-
-#     def not_game(state):
-#         #画出 GameOver 或者 Win 的界面
-#         responses=defaultdic(lambda:state)
-#         responses['Restart'],responses['Exit']='Init','Exit'
-#         return responses[action]
-
-
-#     state_actions={
-#     'Init':init,
-#     'Win':lambda :not_game('Win'),
-#     'Gameover':lambda :not_game('Gameover'),
-#     'Game':game
-#     }
-
-#     state='Init'
-
-#     while state != 'Exit':
-#         state=state_actions[state]()
+#-*- coding:utf-8 -*-
+from collections import defaultdict
+import curses
+from random import randrange,chioce
 
 actions=['Up','Left','Down','Right','Restart','Exit']
 letter_codes=[ord(ch) for ch in 'WASDRQwasdrq']
@@ -120,7 +90,7 @@ class GameField(object):
             def change(i):
                 if row[i] ==0 and row[i+1] !=0:
                     return True
-                if row[i] !=0 and row[i+1]=row[i]:
+                if row[i] !=0 and row[i+1]==row[i]:
                     return True
                 return False
             return  any(change(i) for i in range(len(row)-1))
@@ -141,3 +111,90 @@ class GameField(object):
     def is_gameover(self):
         return  any(self.move_is_possible(move) for move in actions)
 
+    def draw(self,screen):
+        help_string1='(W) Up  (A)Left  (S)Down  (D)Right'
+        help_string2='         (R)Restart (Q)Exit       '
+        win_string  ='              YOU WIN!            '
+        gameover_string='            GameOver             '
+        def cast(string):
+            screen.addstr(string+'\n') 
+
+        def draw_hor_separator():
+            line='+'+('+------'*self.width + '+')[1:]
+            separator=defaultdict(lambda:line)
+            if not hasattr(draw_hor_separator,"counter"):
+                draw_hor_separator.counter=0
+            cast(separator[draw_hor_separator.counter])
+            draw_hor_separator.counter+=1
+
+        def draw_row(row):
+            cast(''.join('|{: ^5}'.format(num) if num>0 else '|     ') for num in row)
+
+        screen.clear()
+        cast('SCORE:'+str(self.score))
+        if 0!=self.highscore:
+            cast('HIGHSCORE:'+str(self.highscore))
+
+        for row in self.field:
+            draw_hor_separator()
+            draw_row(row)
+        
+        draw_hor_separator()
+
+        if self.is_win():
+            cast(win_string)
+        else:
+            if self.is_gameover():
+                cast(gameover_string)
+            else:
+                cast(help_string1)
+        cast(help_string2) 
+
+def main(stdsrc):
+    def init():
+        #游戏初始化
+        game_field.reset()
+        return 'Game'
+
+    def game():
+        game_field.draw(stdsrc)
+        action=get_user_action(stdsrc)
+        if action=='Restart':
+            return 'Init'
+        if action=='Exit':
+            return 'Exit'
+        if game_field.move(action):
+            if game_field.is_win():
+                return 'Win'
+            if game_field.is_gameover():
+                return 'Gameover'
+        return 'Game'
+
+    def not_game(state):
+        #画出 GameOver 或者 Win 的界面
+        game_field.draw(stdsrc)
+        action=get_user_action(stdsrc)
+
+        responses=defaultdic(lambda:state)
+        responses['Restart'],responses['Exit']='Init','Exit'
+        return responses[action]
+
+
+    state_actions={
+            'Init':init,
+            'Win':lambda :not_game('Win'),
+            'Gameover':lambda :not_game('Gameover'),
+            'Game':game
+        }
+
+
+
+    curses.use_default_colors()
+    game_field=GameField(win=32)
+    state='Init'
+
+
+    while state != 'Exit':
+        state=state_actions[state]()
+
+curses.wrapper(main)
