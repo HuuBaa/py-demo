@@ -175,11 +175,10 @@ def main(stdsrc):
         #画出 GameOver 或者 Win 的界面
         game_field.draw(stdsrc)
         action=get_user_action(stdsrc)
-
+        
         responses=defaultdict(lambda:state)
         responses['Restart'],responses['Exit']='Init','Exit'
         return responses[action]
-
 
     state_actions={
             'Init':init,
@@ -188,12 +187,9 @@ def main(stdsrc):
             'Game':game
         }
 
-
-
     curses.use_default_colors()
     game_field=GameField(win=2048)
     state='Init'
-
 
     while state != 'Exit':
         state=state_actions[state]()
