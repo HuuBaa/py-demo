@@ -3,7 +3,7 @@
 """命令行火车票查看器
 
 Usage:
-    ticket [-gdtkz] [-S] <from> <to> <date>
+    tickets [-gdtkz] [-S] <from> <to> <date>
 
 Options:
     -h,--help   显示帮助菜单
