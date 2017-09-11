@@ -22,7 +22,7 @@ from stations import stations
 import requests
 from prettytable import PrettyTable
 from colorama import init, Fore
-
+requests.packages.urllib3.disable_warnings() 
 init()
 
 new_station= dict([(v,k) for k,v in stations.items()])
@@ -90,12 +90,28 @@ def cli():
     stu_ticket=args['-S']
     date=args['<date>']
     if stu_ticket is True:
-        url ="https://kyfw.12306.cn/otn/leftTicket/query?leftTicketDTO.train_date={}&leftTicketDTO.from_station={}&leftTicketDTO.to_station={}&purpose_codes=0X00".format(date,from_station,to_station)
+        url ="https://kyfw.12306.cn/otn/leftTicket/queryX?leftTicketDTO.train_date={}&leftTicketDTO.from_station={}&leftTicketDTO.to_station={}&purpose_codes=0X00".format(date,from_station,to_station)
     else:
-        url="https://kyfw.12306.cn/otn/leftTicket/query?leftTicketDTO.train_date={}&leftTicketDTO.from_station={}&leftTicketDTO.to_station={}&purpose_codes=ADULT".format(date,from_station,to_station)   
+        url="https://kyfw.12306.cn/otn/leftTicket/queryX?leftTicketDTO.train_date={}&leftTicketDTO.from_station={}&leftTicketDTO.to_station={}&purpose_codes=ADULT".format(date,from_station,to_station)  
+
+    headers = {
+ 
+        'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        'Accept-Encoding':'gzip, deflate, br',
+        'Accept-Language':'zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3',
+        'Connection'  :'keep-alive',
+        'Cookie':'JSESSIONID=D10FCA9BD6E9D67F8AAB9EADE7CC586E; route=6f50b51faa11b987e576cdb301e545c4; BIGipServerotn=1190134282.38945.0000; fp_ver=4.5.1; RAIL_EXPIRATION=1605374038667; RAIL_DEVICEID=hgVoDOxI1ynw5daRKZjfzRvgetpJbXoKEUl6l63X2k6VnJVQ_iBtDlEpBiw5qBlCZlqdAx6HQ0BAs0z6rRiHVuB20979A8VqgvTx4eYnsBqu6QgTZWZCiqpW0wvREZ7jhPjhmJFouqRq-XC6ShWkj2iB39Km1J7N; _jc_save_fromStation=%u5317%u4EAC%2CBJP; _jc_save_toStation=%u4E0A%u6D77%2CSHH; _jc_save_fromDate=2017-09-16; _jc_save_toDate=2017-09-11; _jc_save_wfdc_flag=dc',
+        'Host':'kyfw.12306.cn',
+        'Upgrade-Insecure-Requests'   :'1',
+        'User-Agent':'Mozilla/5.0 (Windows NT 10.0; WOW64; rv:55.0) Gecko/20100101 Firefox/55.0'
+        
+    }
+    print(url)
     options=''.join([key for key,value in args.items() if value is True])
     print(options)
-    r=requests.get(url,verify=False)  #verify=False参数不验证证书
+
+    r=requests.get(url,headers=headers,verify=False)  #verify=False参数不验证证书
+    print(r.json())
     available_trains_list=r.json()['data']['result']
     TrainCollection(available_trains_list,options).pretty_print()
 
