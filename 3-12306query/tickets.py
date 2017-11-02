@@ -100,7 +100,7 @@ def cli():
         'Accept-Encoding':'gzip, deflate, br',
         'Accept-Language':'zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3',
         'Connection'  :'keep-alive',
-        'Cookie':'JSESSIONID=D10FCA9BD6E9D67F8AAB9EADE7CC586E; route=6f50b51faa11b987e576cdb301e545c4; BIGipServerotn=1190134282.38945.0000; fp_ver=4.5.1; RAIL_EXPIRATION=1605374038667; RAIL_DEVICEID=hgVoDOxI1ynw5daRKZjfzRvgetpJbXoKEUl6l63X2k6VnJVQ_iBtDlEpBiw5qBlCZlqdAx6HQ0BAs0z6rRiHVuB20979A8VqgvTx4eYnsBqu6QgTZWZCiqpW0wvREZ7jhPjhmJFouqRq-XC6ShWkj2iB39Km1J7N; _jc_save_fromStation=%u5317%u4EAC%2CBJP; _jc_save_toStation=%u4E0A%u6D77%2CSHH; _jc_save_fromDate=2017-09-16; _jc_save_toDate=2017-09-11; _jc_save_wfdc_flag=dc',
+        'Cookie':'JSESSIONID=D10FCA9BD6E9D67F8AAB9EADE7CC586E; route=6f50b51faa11b987e576cdb301e545c4; BIGipServerotn=1190134282.38945.0000; fp_ver=4.5.1; RAIL_EXPIRATION=1505374038667; RAIL_DEVICEID=hgVoDOxI1ynw5daRKZjfzRvgetpJbXoKEUl6l63X2k6VnJVQ_iBtDlEpBiw5qBlCZlqdAx6HQ0BAs0z6rRiHVuB20979A8VqgvTx4eYnsBqu6QgTZWZCiqpW0wvREZ7jhPjhmJFouqRq-XC6ShWkj2iB39Km1J7N; _jc_save_fromStation=%u5317%u4EAC%2CBJP; _jc_save_toStation=%u4E0A%u6D77%2CSHH; _jc_save_fromDate=2017-09-16; _jc_save_toDate=2017-09-11; _jc_save_wfdc_flag=dc',
         'Host':'kyfw.12306.cn',
         'Upgrade-Insecure-Requests'   :'1',
         'User-Agent':'Mozilla/5.0 (Windows NT 10.0; WOW64; rv:55.0) Gecko/20100101 Firefox/55.0'
